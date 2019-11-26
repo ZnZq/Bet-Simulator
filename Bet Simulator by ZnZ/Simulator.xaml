@@ -1,0 +1,260 @@
+﻿<Window x:Class="Bet_Simulator_by_ZnZ.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Bet_Simulator_by_ZnZ"
+        mc:Ignorable="d"
+        Title="Симулятор ставок от ZnZ" Height="auto" Width="990" WindowStartupLocation="CenterScreen" DataContext="{StaticResource SimulatorViewModel}" >
+    <Grid>
+        <TabControl Padding="0" Name="TabControl">
+            <TabItem Header="Настройки">
+                <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="280"/>
+                            <ColumnDefinition Width="280"/>
+                            <ColumnDefinition Width="280"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+
+                        <GroupBox Header="Настройки" Grid.Column="0" Grid.RowSpan="2">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+
+                                <Label Content="Начальный баланс" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" />
+                                <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding Balance, StringFormat={}{0:n8}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                                <Label Content="Начальная ставка" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" />
+                                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding BaseBet, StringFormat={}{0:n8}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                                <Label Content="Множитель - шанс" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" />
+                                <Grid Grid.Row="2" Grid.Column="1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Text="{Binding Multiplier, StringFormat={}{0:n2}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,1,0"/>
+                                    <TextBox Grid.Column="1" Text="{Binding Multiplier, Mode=TwoWay, StringFormat={}{0:P}, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ChanceConverter}}" Margin="1,0,0,0"/>
+                                </Grid>
+
+                                <Label Content="Кол-во ставок" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center"  />
+                                <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding RollCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                                <Label Content="Кол-во потоков" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center"  />
+                                <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding ThreadCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                                <Label Content="Ставить на" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" />
+                                <ComboBox Grid.Row="5" Grid.Column="1" ItemsSource="{Binding BetOnList}" 
+                                          SelectedItem="{Binding BetOn, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+
+                                <Label Content="Пауза для потоков" Grid.Row="6" Grid.Column="0" VerticalAlignment="Center"  />
+                                <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding ThreadSleep, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            </Grid>
+                        </GroupBox>
+
+                        <GroupBox Header="{Binding Header}" Grid.Row="0" Grid.Column="1" DataContext="{Binding OnLossSetting}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+
+                                <RadioButton Content="Вернуться к базовой ставке" Grid.Row="0" Grid.ColumnSpan="2" IsChecked="{Binding Path=ChangeType, Converter={StaticResource EnumConverver}, ConverterParameter=ToBaseBet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                                <RadioButton Grid.Row="1" Grid.Column="0" Content="Умножить ставку на " VerticalAlignment="Center" IsChecked="{Binding Path=ChangeType, Converter={StaticResource EnumConverver}, ConverterParameter=Increase, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Increase, StringFormat={}{0:n2}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         IsEnabled="{Binding ChangeType, Converter={StaticResource EnumConverver}, ConverterParameter=Increase, UpdateSourceTrigger=PropertyChanged}"/>
+
+                                <RadioButton Grid.Row="2" Grid.Column="0" Content="Увеличить ставку на " VerticalAlignment="Center" IsChecked="{Binding Path=ChangeType, Converter={StaticResource EnumConverver}, ConverterParameter=Percent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Percent, StringFormat={}{0:P}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource PercentConverver}}"
+                                         IsEnabled="{Binding ChangeType, Converter={StaticResource EnumConverver}, ConverterParameter=Percent, UpdateSourceTrigger=PropertyChanged}"/>
+
+                                <RadioButton Grid.Row="3" Grid.Column="0" Content="Увеличить ставку на " VerticalAlignment="Center" IsChecked="{Binding Path=ChangeType, Converter={StaticResource EnumConverver}, ConverterParameter=Plus, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Plus, StringFormat={}{0:n8}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,1,0,0"
+                                         IsEnabled="{Binding ChangeType, Converter={StaticResource EnumConverver}, ConverterParameter=Plus, UpdateSourceTrigger=PropertyChanged}"/>
+
+                                <CheckBox Content="Изменить множитель на " Grid.Row="4" Grid.Column="0" VerticalAlignment="Center"
+                                          IsChecked="{Binding ChangeMultiplier, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                <Grid Grid.Row="4" Grid.Column="1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Text="{Binding Multiplier, StringFormat={}{0:n2}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,1,1,0"
+                                             IsEnabled="{Binding ChangeMultiplier, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <TextBox Grid.Column="1" Text="{Binding Multiplier, Mode=TwoWay, StringFormat={}{0:P}, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ChanceConverter}}" Margin="1,1,0,0"
+                                             IsEnabled="{Binding ChangeMultiplier, UpdateSourceTrigger=PropertyChanged}"/>
+                                </Grid>
+                            </Grid>
+                        </GroupBox>
+
+                        <GroupBox Header="{Binding Header}" Grid.Row="0" Grid.Column="2" DataContext="{Binding OnWinSetting}" >
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+
+                                <RadioButton Content="Вернуться к базовой ставке" Grid.Row="0" Grid.ColumnSpan="2" IsChecked="{Binding Path=ChangeType, Converter={StaticResource EnumConverver}, ConverterParameter=ToBaseBet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                                <RadioButton Grid.Row="1" Grid.Column="0" Content="Умножить ставку на " VerticalAlignment="Center" IsChecked="{Binding Path=ChangeType, Converter={StaticResource EnumConverver}, ConverterParameter=Increase, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Increase, StringFormat={}{0:n2}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         IsEnabled="{Binding ChangeType, Converter={StaticResource EnumConverver}, ConverterParameter=Increase, UpdateSourceTrigger=PropertyChanged}"/>
+
+                                <RadioButton Grid.Row="2" Grid.Column="0" Content="Увеличить ставку на " VerticalAlignment="Center" IsChecked="{Binding Path=ChangeType, Converter={StaticResource EnumConverver}, ConverterParameter=Percent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Percent, StringFormat={}{0:P}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource PercentConverver}}"
+                                         IsEnabled="{Binding ChangeType, Converter={StaticResource EnumConverver}, ConverterParameter=Percent, UpdateSourceTrigger=PropertyChanged}"/>
+
+                                <RadioButton Grid.Row="3" Grid.Column="0" Content="Увеличить ставку на " VerticalAlignment="Center" IsChecked="{Binding Path=ChangeType, Converter={StaticResource EnumConverver}, ConverterParameter=Plus, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Plus, StringFormat={}{0:n8}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,1,0,0"
+                                         IsEnabled="{Binding ChangeType, Converter={StaticResource EnumConverver}, ConverterParameter=Plus, UpdateSourceTrigger=PropertyChanged}"/>
+
+                                <CheckBox Content="Изменить множитель на " Grid.Row="4" Grid.Column="0" VerticalAlignment="Center"
+                                          IsChecked="{Binding ChangeMultiplier, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                <Grid Grid.Row="4" Grid.Column="1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Text="{Binding Multiplier, StringFormat={}{0:n2}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,1,1,0"
+                                             IsEnabled="{Binding ChangeMultiplier, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <TextBox Grid.Column="1" Text="{Binding Multiplier, Mode=TwoWay, StringFormat={}{0:P}, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ChanceConverter}}" Margin="1,1,0,0"
+                                             IsEnabled="{Binding ChangeMultiplier, UpdateSourceTrigger=PropertyChanged}"/>
+                                </Grid>
+                            </Grid>
+                        </GroupBox>
+
+                        <GroupBox Header="Предохранители" Grid.Row="1" Grid.Column="1" DataContext="{Binding Fuse}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+
+                                <CheckBox Grid.Row="0" Grid.Column="0" Content="Cумм.Ставки >=" VerticalAlignment="Center" IsChecked="{Binding StopMaxSumm, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding MaxSumm, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat={}{0:n8}}"
+                                     IsEnabled="{Binding StopMaxSumm, UpdateSourceTrigger=PropertyChanged}"/>
+
+                                <CheckBox Content="Сумм.Профит >=" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"  IsChecked="{Binding StopOnProfit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding IfProfit, StringFormat={}{0:n8}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,1,0,0" IsEnabled="{Binding StopOnProfit, UpdateSourceTrigger=PropertyChanged}"/>
+
+                                <CheckBox Content="Сумм.Прогрыш >=" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"  IsChecked="{Binding StopOnLoss, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding IfLoss, StringFormat={}{0:n8}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,1,0,0" IsEnabled="{Binding StopOnLoss, UpdateSourceTrigger=PropertyChanged}"/>
+
+                                <CheckBox Content="Ставка >=" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center"  IsChecked="{Binding StopMaxBet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding MaxBet, StringFormat={}{0:n8}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0,1,0,0" IsEnabled="{Binding StopMaxBet, UpdateSourceTrigger=PropertyChanged}"/>
+                            </Grid>
+                        </GroupBox>
+
+                        <GroupBox Grid.Row="1" Grid.Column="2" Header="Управление" Padding="2">
+                            <StackPanel>
+                                <Button Grid.Row="0" Content="Расчитать" Command="{Binding CalcCommand}" Click="ButtonBase_OnClick"/>
+                            </StackPanel>
+                        </GroupBox>
+                    </Grid>
+
+                    <TextBlock Grid.Row="0" Margin="5,0,5,10" FontSize="19" Width="830" FontFamily="Times New Roman" HorizontalAlignment="Left" 
+                               TextAlignment="Justify" TextWrapping="Wrap" Foreground="Red">
+                        Данная программа всего лишь показывает возможный исход указаной стратегии, всегда присутствует момент случайности. 
+                        Любую стратегию используйте на свой страх и ризк!<LineBreak/><Bold>Всегда есть шанс проиграть всё</Bold>.<LineBreak/> 
+                        Регистрация
+                        <Hyperlink NavigateUri="https://freebitco.in/?r=2160519" local:HyperlinkExtensions.IsExternal="True">Freebitcoin</Hyperlink>, 
+                        <Hyperlink NavigateUri="http://freedoge.co.in/?r=501553" local:HyperlinkExtensions.IsExternal="True">Freedogecoin</Hyperlink>
+                    </TextBlock>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Потоки" Name="Threads">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <ListBox ItemsSource="{Binding GameThreadModels}" SelectedItem="{Binding SelectedThread, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Balance, StringFormat={}Баланс потока: {0:n8}, UpdateSourceTrigger=PropertyChanged}" 
+                                           Foreground="{Binding ClearProfit, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ProfitBrushConverter}}"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+
+                        <StackPanel DataContext="{Binding SelectedThread}">
+                            <TextBlock Text="{Binding WinCount, UpdateSourceTrigger=PropertyChanged, StringFormat={}Побед: {0}}"/>
+                            <TextBlock Text="{Binding LossCount, UpdateSourceTrigger=PropertyChanged, StringFormat={}Поражений: {0}}"/>
+                            <TextBlock Text="{Binding Status, UpdateSourceTrigger=PropertyChanged, StringFormat={}Статус: {0}}"/>
+                            <TextBlock Text="{Binding ClearProfit, UpdateSourceTrigger=PropertyChanged, StringFormat={}Прибыль: {0:n8}}"/>
+                        </StackPanel>
+
+                        <DataGrid Name="DataGrid" Grid.Row="1" ItemsSource="{Binding SelectedThread.GameResultsList, UpdateSourceTrigger=PropertyChanged}" 
+                                  HeadersVisibility="Column" IsReadOnly="True" AutoGenerateColumns="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="ID" Binding="{Binding ID}" Width="50"/>
+                                <DataGridTextColumn Header="Ставка на" Binding="{Binding BetOn}" Width="75"/>
+                                <DataGridTextColumn Header="Число" Binding="{Binding Number}" Width="75"/>
+                                <DataGridTextColumn Header="Победа" Binding="{Binding Win, Converter={StaticResource WinConverter}}" Width="75"/>
+                                <DataGridTextColumn Header="Баланс" Binding="{Binding Balance, StringFormat={}{0:n8}}" Width="100"/>
+                                <DataGridTextColumn Header="Поставлено" Binding="{Binding Bet, StringFormat={}{0:n8}}" Width="100"/>
+                                <DataGridTextColumn Header="Выигрыш" Binding="{Binding Profit, StringFormat={}{0:n8}}" Width="100"/>
+                                <DataGridTextColumn Header="Профит" Binding="{Binding ClearProfit, StringFormat={}{0:n8}}" Width="100"/>
+                                <DataGridTextColumn Header="Сумма ставки" Binding="{Binding SummBet, StringFormat={}{0:n8}}" Width="100"/>
+                            </DataGrid.Columns>
+                            <DataGrid.RowStyle>
+                                <Style TargetType="DataGridRow">
+                                    <Setter Property="Background" Value="{Binding Win, Converter={StaticResource WinBrushConverter}}"/>
+                                </Style>
+                            </DataGrid.RowStyle>
+                        </DataGrid>
+                    </Grid>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>

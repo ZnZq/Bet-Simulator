@@ -1,0 +1,17 @@
+E:\ZnZ\C#\Bet Simulator by ZnZ\Bet Simulator by ZnZ\obj\x86\Debug\Simulator.g.cs
+E:\ZnZ\C#\Bet Simulator by ZnZ\Bet Simulator by ZnZ\obj\x86\Debug\App.g.cs
+E:\ZnZ\C#\Bet Simulator by ZnZ\Bet Simulator by ZnZ\obj\x86\Debug\GeneratedInternalTypeHelper.g.cs
+E:\ZnZ\C#\Bet Simulator by ZnZ\Bet Simulator by ZnZ\obj\x86\Debug\App.baml
+E:\ZnZ\C#\Bet Simulator by ZnZ\Bet Simulator by ZnZ\obj\x86\Debug\Simulator.baml
+E:\ZnZ\C#\Bet Simulator by ZnZ\Bet Simulator by ZnZ\obj\x86\Debug\Bet_Simulator_by_ZnZ.Properties.Resources.resources
+E:\ZnZ\C#\Bet Simulator by ZnZ\Bet Simulator by ZnZ\obj\x86\Debug\Bet Simulator by ZnZ.csproj.GenerateResource.Cache
+E:\ZnZ\C#\Bet Simulator by ZnZ\Bet Simulator by ZnZ\obj\x86\Debug\Bet Simulator by ZnZ.csproj.CoreCompileInputs.cache
+E:\ZnZ\C#\Bet Simulator by ZnZ\Bet Simulator by ZnZ\obj\x86\Debug\Bet Simulator by ZnZ.csprojResolveAssemblyReference.cache
+E:\ZnZ\C#\Bet Simulator by ZnZ\Bet Simulator by ZnZ\bin\x86\Debug\Симулятор ставок от ZnZ.exe.config
+E:\ZnZ\C#\Bet Simulator by ZnZ\Bet Simulator by ZnZ\bin\x86\Debug\Симулятор ставок от ZnZ.exe
+E:\ZnZ\C#\Bet Simulator by ZnZ\Bet Simulator by ZnZ\bin\x86\Debug\Симулятор ставок от ZnZ.pdb
+E:\ZnZ\C#\Bet Simulator by ZnZ\Bet Simulator by ZnZ\obj\x86\Debug\Симулятор ставок от ZnZ_MarkupCompile.cache
+E:\ZnZ\C#\Bet Simulator by ZnZ\Bet Simulator by ZnZ\obj\x86\Debug\Симулятор ставок от ZnZ_MarkupCompile.lref
+E:\ZnZ\C#\Bet Simulator by ZnZ\Bet Simulator by ZnZ\obj\x86\Debug\Симулятор ставок от ZnZ.g.resources
+E:\ZnZ\C#\Bet Simulator by ZnZ\Bet Simulator by ZnZ\obj\x86\Debug\Симулятор ставок от ZnZ.exe
+E:\ZnZ\C#\Bet Simulator by ZnZ\Bet Simulator by ZnZ\obj\x86\Debug\Симулятор ставок от ZnZ.pdb
